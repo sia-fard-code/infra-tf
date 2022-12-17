@@ -1,0 +1,44 @@
+
+def label = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
+
+pipeline {
+  agent none
+  options {
+      timeout(time: 1, unit: 'HOURS')
+      disableConcurrentBuilds()
+  }  
+  stages {
+    stage('Clone Environment Configs'){
+      agent {
+          kubernetes {
+              containerTemplate (
+                  name: 'terraform',
+                  image: 'public.ecr.aws/p0c0p5w0/masimo/terraform',
+                  ttyEnabled: true,
+                  envVars: [secretEnvVar(key: 'GIT_PASS_LOC', optional: false, secretKey: 'GIT_PASS', secretName: 'jenkins-additional-secrets'), secretEnvVar(key: 'GIT_USER_LOC', optional: false, secretKey: 'GIT_USER', secretName: 'jenkins-additional-secrets')],
+                  command: 'cat'
+              )
+          }
+      }
+      steps {
+        container(name: 'terraform') {
+          sh '''
+          cd ..
+          git clone https://${GIT_USER_LOC}:${GIT_PASS_LOC}@bitbucket.masimo.com:8443/scm/dev/iac-terraform.git
+          cd iac-terraform
+          git checkout ${BRANCH}
+          cd safetynet/oci
+          pwd
+          source dev-env-vars
+          ./init-workspace-new.sh -a AKIA4TU3CRCVKZBTMBFQ -s 2iTqLMpyWJ+Nhh0+ukJSykHPkJY91QHaucwDvpVE -c oci
+          cd ${color} ; terraform init ;terraform workspace list
+          terraform workspace select ${ENV}
+          terraform apply -var-file="../vars/${ENV}.tfvars" -auto-approve
+
+        '''
+        }
+      }
+    }
+
+   }
+   }

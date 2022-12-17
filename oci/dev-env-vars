@@ -1,0 +1,21 @@
+export TF_VAR_region=me-jeddah-1
+### Authentication details
+export TF_VAR_tenancy_ocid=ocid1.tenancy.oc1..aaaaaaaaudc5ayyu4jojlwpprj66yfsnmpyggcvjjanh4cchpq6rfkhbsevq
+export TF_VAR_user_ocid=ocid1.user.oc1..aaaaaaaabt3okstg5e2swtffxjwpldgw6e6xyytcuwdeofnhe4ay4yysv3rq
+                        
+                        
+
+export TF_VAR_fingerprint=e9:b9:87:a1:06:72:5b:5a:75:ec:1d:5e:f5:40:e4:1c
+export TF_VAR_private_key_path="$PWD/ssh_key/oci_dev_prv_key.pem"
+
+#export TF_VAR_availability_domain=1
+export TF_VAR_TestServerShape="VM.Standard2.1"
+
+export TF_VAR_CompartmentOCID=ocid1.compartment.oc1..aaaaaaaatkiufgkm4jl5xsbdqlyho6fd3n54mlau625y7w6i5qrgj5q7ocwq
+export TF_VAR_CompartmentOCID=ocid1.compartment.oc1..aaaaaaaahlpqhftlzqcxuh56mbzvxm27243f7pecselksvqyp2aiox33bbyq
+    
+
+### Public/private keys used on the instance
+export TF_VAR_ssh_public_key="$PWD/ssh_key/server.pub"
+export TF_VAR_ssh_private_key="$PWD/ssh_key/server.key"
+

@@ -1,0 +1,38 @@
+{
+    "builders": [{
+      "type": "azure-arm",
+  
+      "client_id": "0157ca10-8e72-4c2e-b772-e766c942ba50",
+      "client_secret": "XOXjjv4D5nQ51I3Q._jPQX.B0p~33mBW6w",
+      "tenant_id": "e1539182-9f23-4fca-a983-d7c09f4493a5",
+      "subscription_id": "10b5e15c-8d59-4b7e-a59b-d47fb2f01f71",
+  
+      "managed_image_resource_group_name": "rg-common-dev",
+      "managed_image_name": "nginximage",
+  
+      "os_type": "Linux",
+      "image_publisher": "Canonical",
+      "image_offer": "UbuntuServer",
+      "image_sku": "16.04-LTS",
+  
+      "azure_tags": {
+          "dept": "Engineering",
+          "task": "Image deployment"
+      },
+  
+      "location": "westus2",
+      "vm_size": "Standard_A2_v2"
+    }],
+    "provisioners": [{
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "inline": [
+        "apt-get update",
+        "apt-get upgrade -y",
+        "apt-get -y install nginx",
+        "systemctl enable nginx",
+        "systemctl start nginx"
+      ],
+      "inline_shebang": "/bin/sh -x",
+      "type": "shell"
+    }]
+  }
